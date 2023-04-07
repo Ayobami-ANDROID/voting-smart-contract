@@ -43,4 +43,10 @@ contract voting{
 
     // variables    
     address public owner;
+
+     event createPollEvt(uint pollId, address owner, string name, string description, uint start_time, uint end_time, uint fee, string[] options);
+
+    constructor() {
+        owner = msg.sender;
+    }
 }
