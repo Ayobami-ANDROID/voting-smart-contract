@@ -33,4 +33,14 @@ contract voting{
        uint[][] poll_options_votes;
        uint[] poll_voted_idxs;
     }
+      uint polls_created;
+    // Mapping of addresses to usernames
+    mapping(address => string ) address_to_username;
+    mapping(string => address ) username_to_address;
+
+    mapping(uint => Poll) polls;
+
+
+    // variables    
+    address public owner;
 }
