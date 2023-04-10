@@ -49,4 +49,44 @@ contract voting{
     constructor() {
         owner = msg.sender;
     }
+
+      function validStr(string memory str) private pure returns(bool isValid) {
+        return bytes(str).length >= 1;
+    }
+
+       function createPoll(string memory name, string memory description, uint start_time, uint end_time, uint fee, string[] memory options) public {
+        // Check string length
+        require(validStr(name) && validStr(description));
+        // Check end time after start time
+        require(end_time >= start_time);
+        // Check more than one option
+        require(options.length >= 2);
+        // Check that options have valid names
+        for (uint i=0; i<options.length; i++) {
+            require(validStr(options[i]));
+        }
+
+        // Adding the poll
+        Poll storage newPoll = polls[polls_created];
+        newPoll.owner = msg.sender;
+        newPoll.name = name;
+        newPoll.description = description;
+        newPoll.start_time = start_time;
+        newPoll.end_time = end_time;
+        newPoll.fee = fee;
+        newPoll.option_count = options.length;
+        newPoll.option_names = options;
+
+        // Adding the poll options
+        for (uint i=0; i<options.length; i++) {
+            voteOption storage option = newPoll.options[newPoll.option_count+1];
+            option.name = options[i];   
+        }
+
+
+        emit createPollEvt(polls_created, msg.sender, name, description, start_time, end_time, fee, options);
+
+        // Increment poll id
+        polls_created++;
+    }
 }
