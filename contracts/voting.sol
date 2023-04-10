@@ -89,4 +89,15 @@ contract voting{
         // Increment poll id
         polls_created++;
     }
+
+    function getUser() public view returns(string memory username) {
+        return address_to_username[msg.sender];
+    }
+
+    function createUser(string memory username) public{
+        // Make checks to ensure user name is not empty && not taken && address not registered
+        require(validStr(username));
+        address_to_username[msg.sender] = username;
+        username_to_address[username] = msg.sender;
+    }
 }
